@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<!-- Stylesheet Load -->
+<link href="styles/style.css"				rel="stylesheet" 	type="text/css">
+<link href="styles/framework-style.css" 	rel="stylesheet" 	type="text/css">
+<link href="styles/framework.css" 			rel="stylesheet" 	type="text/css">
+<link href="styles/icons.css"				rel="stylesheet" 	type="text/css">
+<link href="styles/retina.css" 				rel="stylesheet" 	type="text/css" 	media="only screen and (-webkit-min-device-pixel-ratio: 2)" />
+<!--Page Scripts Load -->
+<script src="scripts/jquery.min.js"		type="text/javascript"></script>	
+<script src="scripts/jquery-ui-min.js"  type="text/javascript"></script>
+<script src="scripts/colorbox.js"		type="text/javascript"></script>
+<script src="scripts/hammer.js"			type="text/javascript"></script>	
+<script src="scripts/subscribe.js"		type="text/javascript"></script>
+<script src="scripts/contact.js"		type="text/javascript"></script>
+<script src="scripts/swipe.js"			type="text/javascript"></script>
+<script src="scripts/swipebox.js"		type="text/javascript"></script>
+<script src="scripts/retina.js"			type="text/javascript"></script>
+<script src="scripts/custom.js"			type="text/javascript"></script>
+<script src="scripts/framework.js"		type="text/javascript"></script>
+</head>
+
+<body>
+
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+<div class="header">
+	<a href="#" class="deploy-left-sidebar"></a>
+	<!--<a href="#" class="deploy-right-sidebar"></a>-->
+    <a href="#" class="top-logo"><img src="images/misc/logo.png" class="replace-2x" width="80" alt="img"></a>
+</div>
+
+<div class="content-box shadow" style="padding-top:45px;">
+    
+</div>
+
+
+
+<div class="sidebar-left">
+	<div class="sidebar-scroll-left">
+    	<div class="sidebar-header-left">
+			<img src="images/misc/logo.png" class="sidebar-left-logo replace-2x" width="80" alt="img">
+        	<a href="#" class="close-sidebar-left"></a>
+    	</div>
+    
+        <p class="sidebar-divider-text">NAVIGATION</p>
+        
+        <div class="menu">
+			
+        </div>
+        <div class="sidebar-decoration"></div>
+        <p class="copyright-sidebar">Copyright Tecbec 2016. All rights reserved!</p>
+        
+        
+        <div class="sidebar-bottom-controls">
+            <!--<a href="https://www.instagram.com/inknroad/">
+                <em class="instagram-bottom"></em>
+                <p>Insagram</p>
+            </a>-->
+            <a href="https://www.facebook.com/InknRoad-1490377064611440/">
+                <em class="facebook-bottom"></em>
+                <p>Facebook</p>
+            </a>
+            <a href="#">
+                <em class="close-bottom-left"></em>
+                <p>Collapse</p>
+            </a>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="ads"></div>
+
+<script>
+$(document).on('click','.nav-item, .mapload',function(e){
+		
+		e.preventDefault();
+		$("#preloader").fadeIn();
+		$("#status").delay(350).fadeIn(200,function(){$('.sidebar-left').css('left','-280px');});
+		$.getJSON($(this).attr('href')+'?callback=?', function(result) {
+			
+			$('.content-box').html(result.html);
+			$.getScript('http://inrapp.tecbec.com/oteapp/scripts/framework.js',function(){
+				$("#status").fadeOut(); 
+				$("#preloader").delay(350).fadeOut();
+			});
+			
+			if(result.callback && result.callback == 'livedata')
+			{
+				setInterval(function()
+				{
+					var uid = $('.refresher').attr('data-timestamp');
+					$.getJSON('http://inrapp.tecbec.com/appdata/genlivefeed/'+uid+'?callback=?', function(data){
+						
+						if(data.html!='')
+						{
+							$('.refresher').fadein().prepend(data.html);
+							$('.refresher').attr('data-timestamp',data.timestamp);
+						}
+						
+					});
+				},10000);
+			}
+        });
+	});
+	
+	$(document).on('click','.openbio, .full-folio-item-more',function(e){
+		e.preventDefault();
+		var elemid = $(this).data('boothid');
+		$.getJSON($(this).attr('href')+'?callback=?', function(result) {
+		
+			$('.opened').html('');
+			$('.opened').toggle(500);
+			$('.opened').removeClass('opened');
+			$('.'+elemid).html(result.html);
+			$('.'+elemid).addClass('opened');
+			$.getScript('scripts/framework.js');
+			
+			$('.'+elemid).toggle(500,function()
+			{
+				var aTag = $("#"+ elemid);
+				$('html,body').animate({scrollTop: aTag.offset().top-50},200);
+			});
+		});
+	});
+	
+	$(document).on('click','.openbio, .full-folio-item-more, .nav-item, .mapload',function(){ga('send', 'event', 'request', $(this).attr('href'));});
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
+
+
+

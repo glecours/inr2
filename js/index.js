@@ -54,12 +54,7 @@ document.addEventListener('deviceready', function () {
   };
 
   window.plugins.OneSignal
-    .startInit("f4bdeb26-5602-4663-9fc4-dbe8a617810b", "875029484681")
+    .startInit("f4bdeb26-5602-4663-9fc4-dbe8a617810b")
     .handleNotificationOpened(notificationOpenedCallback)
     .endInit();
 }, false);
-
-window.plugins.OneSignal.getIds(function(ids) {
-  console.log('getIds: ' + JSON.stringify(ids));
-  alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
-});
